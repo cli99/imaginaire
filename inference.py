@@ -17,16 +17,15 @@ from imaginaire.utils.trainer import \
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Training')
-    parser.add_argument('--config', required=True,
+    parser.add_argument('--config',
+                        required=True,
                         help='Path to the training config file.')
-    parser.add_argument('--checkpoint', default='',
-                        help='Checkpoint path.')
-    parser.add_argument('--output_dir', required=True,
+    parser.add_argument('--checkpoint', default='', help='Checkpoint path.')
+    parser.add_argument('--output_dir',
+                        required=True,
                         help='Location to save the image outputs')
-    parser.add_argument('--logdir',
-                        help='Dir for saving logs and models.')
-    parser.add_argument('--seed', type=int, default=0,
-                        help='Random seed.')
+    parser.add_argument('--logdir', help='Dir for saving logs and models.')
+    parser.add_argument('--seed', type=int, default=0, help='Random seed.')
     parser.add_argument('--local_rank', type=int, default=0)
     parser.add_argument('--single_gpu', action='store_true')
     parser.add_argument('--num_workers', type=int)
@@ -62,10 +61,8 @@ def main():
     test_data_loader = get_test_dataloader(cfg)
     net_G, net_D, opt_G, opt_D, sch_G, sch_D = \
         get_model_optimizer_and_scheduler(cfg, seed=args.seed)
-    trainer = get_trainer(cfg, net_G, net_D,
-                          opt_G, opt_D,
-                          sch_G, sch_D,
-                          None, test_data_loader)
+    trainer = get_trainer(cfg, net_G, net_D, opt_G, opt_D, sch_G, sch_D, None,
+                          test_data_loader)
 
     if args.checkpoint == '':
         # Download pretrained weights.
@@ -74,8 +71,8 @@ def main():
             print('google link to the pretrained weight is not specified.')
             raise
         default_checkpoint_path = args.config.replace('.yaml', '.pt')
-        args.checkpoint = get_checkpoint(
-            default_checkpoint_path, pretrained_weight_url)
+        args.checkpoint = get_checkpoint(default_checkpoint_path,
+                                         pretrained_weight_url)
         print('Checkpoint downloaded to', args.checkpoint)
 
     # Load checkpoint.
